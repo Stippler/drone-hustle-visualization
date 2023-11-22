@@ -7,6 +7,7 @@ import LoadCurve from '@/components/load-curve';
 import Card from '@/components/card';
 import CostCurve from '@/components/cost-curve';
 import BatteryPrognosis from '@/components/battery-prognosis';
+import PriceCurve from '@/components/price-curve';
 
 export default function Home() {
 
@@ -27,14 +28,20 @@ export default function Home() {
         <Card title="Load Curve">
           <LoadCurve />
         </Card>
+        <Card title="Price Curve">
+          <PriceCurve />
+        </Card>
         <Card title="Cost Curve">
           <CostCurve />
         </Card>
         <Card title="Battery Prognosis">
           <BatteryPrognosis />
         </Card>
+        <Card title="Schedule">
+          <ScheduleBar />
+        </Card>
+
       </div>
-      <ScheduleBar />
     </main>
   );
 }
