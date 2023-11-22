@@ -45,7 +45,7 @@ export const useDroneStore = create()(
         pending_charge_requests: [],
         updateState: async () => {
             try {
-                const response = await fetch('http://f4r.ict.tuwien.ac.at:80/visualisation');
+                const response = await fetch('https://f4r.ict.tuwien.ac.at:80/visualisation');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
