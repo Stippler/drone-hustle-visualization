@@ -50,19 +50,30 @@ const ApiInteractionForms = () => {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
-        const action = form.getAttribute('action');
+        const endpoint = form.getAttribute('action');
         const method = form.getAttribute('method');
+        const url = `https://f4r.ict.tuwien.ac.at:443${endpoint}`;
 
-        // Example of handling the form submission
-        // You can adapt this to make an actual API call
-        fetch(action, {
+
+        // Log data for debugging
+        for (let pair of data.entries()) {
+            console.log(`${pair[0]}: ${pair[1]}`);
+        }
+
+        // Adapt this to make an actual API call
+        fetch(url, {
             method: method,
-            body: data,
-        }).then(response => {
-            // Handle response
-            console.log('Response:', response);
-        }).catch(error => {
-            // Handle error
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers your API expects, such as authorization tokens.
+            },
+            body: JSON.stringify(Object.fromEntries(data)),
+        })
+        .then(response => response.json()) // Assuming the server responds with JSON
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => {
             console.error('Error:', error);
         });
     };

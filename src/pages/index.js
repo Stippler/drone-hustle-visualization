@@ -37,7 +37,7 @@ export default function Home() {
           <Card title="Load Curve" text={loadcurveText}>
             <LoadCurve />
           </Card>
-          <Card title="Price Curve" text={batteryprognosisText}>
+          <Card title="Price Curve" text={pricecurveText}>
             <PriceCurve />
           </Card>
           <Card title="Cost Curve" text={costcurveText}>
