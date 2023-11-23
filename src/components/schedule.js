@@ -29,7 +29,6 @@ const ScheduleBar = () => {
                 lastId = id;
             }
         });
-        console.log(processedData);
 
         // Set the dimensions and margins of the graph
         // Set the dimensions and margins of the graph
