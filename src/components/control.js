@@ -2,8 +2,7 @@
 // Also add controls over changing the state and stuff...
 
 import React, { useState } from 'react';
-
-const TextField = ({ name, placeholder, type = "text", required = false, step = "any" }) => (
+const TextField = ({ name, placeholder, type = "text", required = false, step = "any", defaultValue = ""}) => (
     <input
         className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
         type={type}
@@ -11,8 +10,10 @@ const TextField = ({ name, placeholder, type = "text", required = false, step = 
         placeholder={placeholder}
         required={required}
         step={step}
+        defaultValue = {defaultValue}
     />
 );
+
 
 const TextAreaField = ({ name, placeholder, required = false }) => (
     <textarea
@@ -41,8 +42,6 @@ const TabButton = ({ children, active, onClick }) => (
         {children}
     </button>
 );
-
-
 
 const ApiInteractionForms = () => {
     const [activeTab, setActiveTab] = useState('removeBatteries');
@@ -112,10 +111,10 @@ const ApiInteractionForms = () => {
                 )}
                 {activeTab === 'addBattery' && (
                     <form onSubmit={handleSubmit} method="POST" action="/battery" className="mb-4 space-y-4">
-                        <TextField name="battery_id" placeholder="Battery ID" required />
-                        <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" required />
-                        <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01" required />
-                        <TextField name="max_power_watt" placeholder="Max Power (Watt)" type="number" required />
+                        <TextField name="battery_id" placeholder="Battery ID" defaultValue='battery123' />
+                        <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" defaultValue='0.5' required />
+                        <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01"  defaultValue='2'required />
+                        <TextField name="max_power_watt" placeholder="Max Power (Watt)" type="number" defaultValue='2000' required />
                         <SubmitButton text="Add Battery" />
                     </form>
                 )}
@@ -123,9 +122,9 @@ const ApiInteractionForms = () => {
                 {activeTab === 'requestCharging' && (
                     <form onSubmit={handleSubmit} method="POST" action="/charge-request" className="space-y-4">
                         <TextField name="drone_id" placeholder="Drone ID" required />
-                        <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" required />
-                        <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01" required />
-                        <TextField name="max_power_watt" placeholder="Max Power (Watt)" type="number" required />
+                        <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" defaultValue='0.1' required />
+                        <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01" defaultValue='2' required />
+                        <TextField name="max_power_watt" placeholder="Max Power (Watt)" type="number" defaultValue='2000' required />
                         <TextField name="delta_eta_seconds" placeholder="ETA (seconds)" type="number" required />
                         <SubmitButton text="Request Charging" />
                     </form>

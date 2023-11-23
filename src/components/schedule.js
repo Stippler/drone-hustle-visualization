@@ -11,6 +11,16 @@ const ScheduleBar = () => {
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
+    const handleWheel = (event) => {
+        event.preventDefault();
+        const zoomIntensity = 0.1;
+        const scaleChange = event.deltaY * -zoomIntensity;
+        // Calculate the new time window, but constrain it between 1 hour and 72 hours
+        let newTimeWindow = timeWindow + scaleChange * timeWindow;
+        newTimeWindow = Math.min(Math.max(newTimeWindow, 3600), 48 * 3600);
+        setTimeWindow(newTimeWindow);
+    };
+
     useEffect(() => {
         if (loading) return;
 
@@ -23,7 +33,7 @@ const ScheduleBar = () => {
         scheduleData.forEach((id, i) => {
             if (id !== lastId || id === -1) {
                 if (lastId !== -1) {
-                    processedData.push({ id: lastId, start: startTime*60, end: i*60 });
+                    processedData.push({ id: lastId, start: startTime * 60, end: i * 60 });
                 }
                 startTime = i;
                 lastId = id;
@@ -86,9 +96,12 @@ const ScheduleBar = () => {
             .attr('height', y.bandwidth())
             .attr('fill', d => getColor(d.id));
 
-        // Optionally add text labels on bars here
+        const svgElement = svgRef.current;
+        svgElement.addEventListener('wheel', handleWheel);
+
         return () => {
             svg.selectAll("*").remove();
+            svgElement.removeEventListener('wheel', handleWheel);
         };
     }, [optimized_schedule, loading, timeWindow]);
 

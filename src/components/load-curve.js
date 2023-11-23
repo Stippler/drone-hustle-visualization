@@ -14,6 +14,16 @@ const LoadCurve = () => {
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
+    const handleWheel = (event) => {
+        event.preventDefault();
+        const zoomIntensity = 0.1;
+        const scaleChange = event.deltaY * -zoomIntensity;
+        // Calculate the new time window, but constrain it between 1 hour and 72 hours
+        let newTimeWindow = timeWindow + scaleChange * timeWindow;
+        newTimeWindow = Math.min(Math.max(newTimeWindow, 3600), 48 * 3600);
+        setTimeWindow(newTimeWindow);
+    };
+
     useEffect(() => {
         if (loading) return;
 
@@ -123,28 +133,13 @@ const LoadCurve = () => {
             .text("Unoptimized Load")
             .style("font-size", "12px");
 
-        // Zoom function
-        const zoomed = (event) => {
-            const newX = event.transform.rescaleX(x);
-            xAxis.scale(newX);
-            svg.select(".x-axis").call(xAxis);
-            svg.selectAll("path").attr("d", createLine.x((_, i) => newX(i)));
-        }
 
-        const zoom = d3.zoom()
-            .scaleExtent([1 / 48, 1]) // limit zoom to 1-48 hours
-            .translateExtent([[0, 0], [width, height]])
-            .on("zoom", zoomed);
-
-        svg.append("rect")
-            .attr("width", width)
-            .attr("height", height)
-            .style("fill", "none")
-            .style("pointer-events", "all")
-            .call(zoom);
+        const svgElement = svgRef.current;
+        svgElement.addEventListener('wheel', handleWheel);
 
         return () => {
             svg.selectAll("*").remove();
+            svgElement.removeEventListener('wheel', handleWheel);
         };
     }, [optimized_schedule, unoptimized_schedule, timeWindow]);
 

@@ -15,6 +15,16 @@ const BatteryPrognosis = () => {
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
+    const handleWheel = (event) => {
+        event.preventDefault();
+        const zoomIntensity = 0.1;
+        const scaleChange = event.deltaY * -zoomIntensity;
+        // Calculate the new time window, but constrain it between 1 hour and 72 hours
+        let newTimeWindow = timeWindow + scaleChange * timeWindow;
+        newTimeWindow = Math.min(Math.max(newTimeWindow, 3600), 48 * 3600);
+        setTimeWindow(newTimeWindow);
+    };
+
     useEffect(() => {
         if (loading) return;
 
@@ -136,8 +146,12 @@ const BatteryPrognosis = () => {
             .text("Waiting Batteries")
             .style("font-size", "12px");
 
+        const svgElement = svgRef.current;
+        svgElement.addEventListener('wheel', handleWheel);
+
         return () => {
             svg.selectAll("*").remove();
+            svgElement.removeEventListener('wheel', handleWheel);
         };
     }, [battery_prognosis, demand_events, loading]);
 

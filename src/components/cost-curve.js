@@ -13,6 +13,16 @@ const CostCurve = () => {
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
+    const handleWheel = (event) => {
+        event.preventDefault();
+        const zoomIntensity = 0.1;
+        const scaleChange = event.deltaY * -zoomIntensity;
+        // Calculate the new time window, but constrain it between 1 hour and 72 hours
+        let newTimeWindow = timeWindow + scaleChange * timeWindow;
+        newTimeWindow = Math.min(Math.max(newTimeWindow, 3600), 48 * 3600);
+        setTimeWindow(newTimeWindow);
+    };
+
     useEffect(() => {
         if (loading) return;
 
@@ -26,7 +36,7 @@ const CostCurve = () => {
 
         // Set the dimensions and margins of the graph
         const margin = { top: 10, right: 30, bottom: 40, left: 60 },
-            width = 400 - margin.left - margin.right, 
+            width = 400 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
 
         // Append the svg object to the body of the page
@@ -124,10 +134,12 @@ const CostCurve = () => {
             .text("Unoptimized Cost")
             .style("font-size", "12px");
 
-        // ... Zoom functionality can be added similarly to LoadCurve component
+        const svgElement = svgRef.current;
+        svgElement.addEventListener('wheel', handleWheel);
 
         return () => {
             svg.selectAll("*").remove();
+            svgElement.removeEventListener('wheel', handleWheel);
         };
     }, [optimized_schedule, unoptimized_schedule, price_profile, timeWindow]);
 

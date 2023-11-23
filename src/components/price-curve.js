@@ -13,6 +13,16 @@ const PriceCurve = () => {
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
+    const handleWheel = (event) => {
+        event.preventDefault();
+        const zoomIntensity = 0.1;
+        const scaleChange = event.deltaY * -zoomIntensity;
+        // Calculate the new time window, but constrain it between 1 hour and 72 hours
+        let newTimeWindow = timeWindow + scaleChange * timeWindow;
+        newTimeWindow = Math.min(Math.max(newTimeWindow, 3600), 48 * 3600);
+        setTimeWindow(newTimeWindow);
+    };
+
     useEffect(() => {
         if (!price_profile || price_profile.length === 0) return;
 
@@ -84,8 +94,12 @@ const PriceCurve = () => {
             .attr("stroke-width", 1.5)
             .attr("d", line);
 
+        const svgElement = svgRef.current;
+        svgElement.addEventListener('wheel', handleWheel);
+
         return () => {
             svg.selectAll("*").remove();
+            svgElement.removeEventListener('wheel', handleWheel);
         };
     }, [price_profile]);
 
