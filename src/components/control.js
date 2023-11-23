@@ -2,7 +2,7 @@
 // Also add controls over changing the state and stuff...
 
 import React, { useState } from 'react';
-const TextField = ({ name, placeholder, type = "text", required = false, step = "any", defaultValue = ""}) => (
+const TextField = ({ name, placeholder, type = "text", required = false, step = "any", defaultValue = "" }) => (
     <input
         className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
         type={type}
@@ -10,7 +10,7 @@ const TextField = ({ name, placeholder, type = "text", required = false, step = 
         placeholder={placeholder}
         required={required}
         step={step}
-        defaultValue = {defaultValue}
+        defaultValue={defaultValue}
     />
 );
 
@@ -68,13 +68,13 @@ const ApiInteractionForms = () => {
             },
             body: JSON.stringify(Object.fromEntries(data)),
         })
-        .then(response => response.json()) // Assuming the server responds with JSON
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     };
 
     return (
@@ -113,7 +113,7 @@ const ApiInteractionForms = () => {
                     <form onSubmit={handleSubmit} method="POST" action="/battery" className="mb-4 space-y-4">
                         <TextField name="battery_id" placeholder="Battery ID" defaultValue='battery123' />
                         <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" defaultValue='0.5' required />
-                        <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01"  defaultValue='2'required />
+                        <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01" defaultValue='2' required />
                         <TextField name="max_power_watt" placeholder="Max Power (Watt)" type="number" defaultValue='2000' required />
                         <SubmitButton text="Add Battery" />
                     </form>
@@ -121,11 +121,11 @@ const ApiInteractionForms = () => {
 
                 {activeTab === 'requestCharging' && (
                     <form onSubmit={handleSubmit} method="POST" action="/charge-request" className="space-y-4">
-                        <TextField name="drone_id" placeholder="Drone ID" required />
+                        <TextField name="drone_id" placeholder="Drone ID" defaultValue='drone123' required />
                         <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" defaultValue='0.1' required />
                         <TextField name="capacity_kwh" placeholder="Capacity (kWh)" type="number" step="0.01" defaultValue='2' required />
                         <TextField name="max_power_watt" placeholder="Max Power (Watt)" type="number" defaultValue='2000' required />
-                        <TextField name="delta_eta_seconds" placeholder="ETA (seconds)" type="number" required />
+                        <TextField name="delta_eta_seconds" placeholder="ETA (seconds)" type="number" defaultValue='300' required />
                         <SubmitButton text="Request Charging" />
                     </form>
                 )}
@@ -133,15 +133,15 @@ const ApiInteractionForms = () => {
 
                 {activeTab === 'exchangeBattery' && (
                     <form onSubmit={handleSubmit} method="PUT" action="/exchange" className="space-y-4">
-                        <TextField name="drone_id" placeholder="Drone ID" required />
-                        <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" required />
+                        <TextField name="drone_id" placeholder="Drone ID" defaultValue='drone123' required />
+                        <TextField name="state_of_charge" placeholder="State Of Charge" type="number" step="0.01" defaultValue='0.1' required />
                         <SubmitButton text="Exchange Battery" />
                     </form>
                 )}
 
                 {activeTab === 'demandEstimation' && (
                     <form onSubmit={handleSubmit} method="PUT" action="/demand-estimation" className="space-y-4">
-                        <TextAreaField name="demand" placeholder="Enter demand events (comma-separated seconds after midnight)" required />
+                        <TextAreaField name="demand" placeholder="Enter demand events (comma-separated seconds after midnight)" defaultValue='[0,3600,7200,10800,14400,18000,21600,25200,28800,32400,36000,39600,43200,46800,50400,54000,57600,61200,64800,68400,72000,75600,79200,82800]' required />
                         <SubmitButton text="Submit Demand Estimation" />
                     </form>
                 )}
@@ -149,8 +149,8 @@ const ApiInteractionForms = () => {
 
                 {activeTab === 'updatePriceProfile' && (
                     <form onSubmit={handleSubmit} method="PUT" action="/price-profile" className="space-y-4">
-                        <TextAreaField name="price" placeholder="Enter price profile (comma-separated values)" required />
-                        <TextField name="resolution_s" placeholder="Resolution in seconds" type="number" required />
+                        <TextAreaField name="price" placeholder="Enter price profile (comma-separated values)" defaultValue="[25.02,18.29,16.04,14.6,14.95,14.5,10.76,12.01,12.39,14.04,14.68,16.08,16.08,16.05,16.04,16.1,23.93,26.9,26.36,23.98,16.09,14.08,12.44,0.04]" required />
+                        <TextField name="resolution_s" placeholder="Resolution in seconds" type="number" defaultValue='3600' required />
                         <SubmitButton text="Update Price Profile" />
                     </form>
                 )}
@@ -158,7 +158,7 @@ const ApiInteractionForms = () => {
 
                 {activeTab === 'restartSimulation' && (
                     <form onSubmit={handleSubmit} method="POST" action="/restart" className="space-y-4">
-                        <TextField name="start_time" placeholder="Start Time (seconds since midnight)" type="number" required />
+                        <TextField name="start_time" placeholder="Start Time (seconds since midnight)" type="number" defaultValue='0' required />
                         <SubmitButton text="Restart Simulation" />
                     </form>
                 )}

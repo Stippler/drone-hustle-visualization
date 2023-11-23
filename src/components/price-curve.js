@@ -5,11 +5,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { useDroneStore } from '@/store'; // Adjust the import path
 
+function calculateSecondsSinceMidnight(timeStr) {
+    let totalSeconds = 0;
+    if (timeStr.includes('days')) {
+        const parts = timeStr.split(', ');
+        timeStr = parts[1];
+    }
+    const timeParts = timeStr.split(':').map(Number);
+    totalSeconds += timeParts[0] * 3600 + timeParts[1] * 60 + timeParts[2];
+    return totalSeconds;
+}
+
 const PriceCurve = () => {
     const svgRef = useRef();
-    const { price_profile } = useDroneStore(state => ({
-        price_profile: state.price_profile
+    const { price_profile, current_time} = useDroneStore(state => ({
+        price_profile: state.price_profile,
+        current_time: state.current_time
     }));
+
+    const timeSinceMidnight = calculateSecondsSinceMidnight(current_time);
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
@@ -52,6 +66,7 @@ const PriceCurve = () => {
 
         // Axes
         const xAxis = d3.axisBottom(x).tickFormat(d => {
+            d = d+timeSinceMidnight/60;
             const hours = Math.floor(d / 60);
             const minutes = d % 60;
             return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;

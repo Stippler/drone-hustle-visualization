@@ -4,13 +4,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { useDroneStore } from '@/store'; // Adjust the import path
 
+function calculateSecondsSinceMidnight(timeStr) {
+    let totalSeconds = 0;
+    if (timeStr.includes('days')) {
+        const parts = timeStr.split(', ');
+        timeStr = parts[1];
+    }
+    const timeParts = timeStr.split(':').map(Number);
+    totalSeconds += timeParts[0] * 3600 + timeParts[1] * 60 + timeParts[2];
+    return totalSeconds;
+}
+
 const LoadCurve = () => {
     const svgRef = useRef();
-    const { optimized_schedule, unoptimized_schedule, loading } = useDroneStore(state => ({
+    const { optimized_schedule, unoptimized_schedule, loading, current_time} = useDroneStore(state => ({
+        current_time: state.current_time,
         optimized_schedule: state.optimized_schedule,
         unoptimized_schedule: state.unoptimized_schedule,
         loading: state.loading
     }));
+
+    const timeSinceMidnight = calculateSecondsSinceMidnight(current_time);
 
     const [timeWindow, setTimeWindow] = useState(8 * 3600); // 8 hours in seconds
 
@@ -54,6 +68,7 @@ const LoadCurve = () => {
 
         // Axes
         const xAxis = d3.axisBottom(x).tickFormat(d => {
+            d = d+timeSinceMidnight/60;
             const hours = Math.floor(d * optimized_schedule.resolution_seconds / 3600);
             const minutes = Math.floor((d * optimized_schedule.resolution_seconds % 3600) / 60);
             const seconds = d * optimized_schedule.resolution_seconds % 60;
