@@ -15,12 +15,13 @@ const TextField = ({ name, placeholder, type = "text", required = false, step = 
 );
 
 
-const TextAreaField = ({ name, placeholder, required = false }) => (
+const TextAreaField = ({ name, placeholder, required = false, defaultValue = ""}) => (
     <textarea
         className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
         name={name}
         placeholder={placeholder}
         required={required}
+        defaultValue={defaultValue}
     ></textarea>
 );
 

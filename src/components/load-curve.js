@@ -71,8 +71,7 @@ const LoadCurve = () => {
             d = d+timeSinceMidnight/60;
             const hours = Math.floor(d * optimized_schedule.resolution_seconds / 3600);
             const minutes = Math.floor((d * optimized_schedule.resolution_seconds % 3600) / 60);
-            const seconds = d * optimized_schedule.resolution_seconds % 60;
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         });
         const yAxis = d3.axisLeft(y);
 
