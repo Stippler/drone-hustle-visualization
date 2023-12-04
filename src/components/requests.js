@@ -27,7 +27,7 @@ const ExchangeRequests = () => {
             },
             body: JSON.stringify({
                 drone_id: id, 
-                response_uri: "https://bexstream-preprod.beyond-vision.pt/swagger-ieot/#/IEOT/IeotController_processBatteryExchanged"
+                response_uri: "https://bexstream-preprod.beyond-vision.pt/api/v1/elevation/batteryExchanged"
             }),
         }).then(response => response.json()) // Assuming the server responds with JSON
         .then(data => {
