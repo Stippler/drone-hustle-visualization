@@ -18,7 +18,6 @@ const ExchangeRequests = () => {
     }));
 
     const handleButtonClick = (id) => {
-        console.log(`Button clicked for ID: ${id}`);
         // Add any additional logic you need here
         console.log({ drone_id: id });
         fetch('https://f4r.ict.tuwien.ac.at:443/exchange-completed', {

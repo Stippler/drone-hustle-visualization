@@ -56,11 +56,24 @@ const ApiInteractionForms = () => {
         // https://f4r.ict.tuwien.ac.at:443
         const url = `https://f4r.ict.tuwien.ac.at:443${endpoint}`;
 
+        // Parse 'price' from a string to an array of numbers
+        let object = Object.fromEntries(data);
+        if (object.price) {
+            object.price = object.price
+                .split(',') // Split the string by commas
+                .map(item => parseFloat(item.trim())); // Convert each item to a float
+        }
+        if (object.demand) {
+            object.demand = object.demand
+                .split(',') // Split the string by commas
+                .map(item => parseFloat(item.trim())); // Convert each item to a float
+        }
 
         // Log data for debugging
-        for (let pair of data.entries()) {
-            console.log(`${pair[0]}: ${pair[1]}`);
-        }
+        // for (let pair of data.entries()) {
+        //     console.log(`${pair[0]}: ${pair[1]}`);
+        // }
+        console.log(object);
 
         // Adapt this to make an actual API call
         fetch(url, {
@@ -69,7 +82,7 @@ const ApiInteractionForms = () => {
                 'Content-Type': 'application/json',
                 // Add any other headers your API expects, such as authorization tokens.
             },
-            body: JSON.stringify(Object.fromEntries(data)),
+            body: JSON.stringify(object)
         })
             .then(response => response.json()) // Assuming the server responds with JSON
             .then(data => {
@@ -144,7 +157,7 @@ const ApiInteractionForms = () => {
 
                 {activeTab === 'demandEstimation' && (
                     <form onSubmit={handleSubmit} method="PUT" action="/demand-estimation" className="space-y-4">
-                        <TextAreaField name="demand" placeholder="Enter demand events (comma-separated seconds after midnight)" defaultValue='[0,3600,7200,10800,14400,18000,21600,25200,28800,32400,36000,39600,43200,46800,50400,54000,57600,61200,64800,68400,72000,75600,79200,82800]' required />
+                        <TextAreaField name="demand" placeholder="Enter demand events (comma-separated seconds after midnight)" defaultValue='0,3600,7200,10800,14400,18000,21600,25200,28800,32400,36000,39600,43200,46800,50400,54000,57600,61200,64800,68400,72000,75600,79200,82800' required />
                         <SubmitButton text="Submit Demand Estimation" />
                     </form>
                 )}
@@ -152,7 +165,7 @@ const ApiInteractionForms = () => {
 
                 {activeTab === 'updatePriceProfile' && (
                     <form onSubmit={handleSubmit} method="PUT" action="/price-profile" className="space-y-4">
-                        <TextAreaField name="price" placeholder="Enter price profile (comma-separated values)" defaultValue="[25.02,18.29,16.04,14.6,14.95,14.5,10.76,12.01,12.39,14.04,14.68,16.08,16.08,16.05,16.04,16.1,23.93,26.9,26.36,23.98,16.09,14.08,12.44,0.04]" required />
+                        <TextAreaField name="price" placeholder="Enter price profile (comma-separated values)" defaultValue="25.02,18.29,16.04,14.6,14.95,14.5,10.76,12.01,12.39,14.04,14.68,16.08,16.08,16.05,16.04,16.1,23.93,26.9,26.36,23.98,16.09,14.08,12.44,0.04" required />
                         <TextField name="resolution_s" placeholder="Resolution in seconds" type="number" defaultValue='3600' required />
                         <SubmitButton text="Update Price Profile" />
                     </form>
