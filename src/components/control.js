@@ -15,7 +15,7 @@ const TextField = ({ name, placeholder, type = "text", required = false, step = 
 );
 
 
-const TextAreaField = ({ name, placeholder, required = false, defaultValue = ""}) => (
+const TextAreaField = ({ name, placeholder, required = false, defaultValue = "" }) => (
     <textarea
         className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
         name={name}
@@ -52,7 +52,9 @@ const ApiInteractionForms = () => {
         const data = new FormData(form);
         const endpoint = form.getAttribute('action');
         const method = form.getAttribute('method');
-        const url = `https://f4r.ict.tuwien.ac.at:443${endpoint}`;
+        // TODO: change back!
+        // https://f4r.ict.tuwien.ac.at:443
+        const url = `http://localhost:8009${endpoint}`;
 
 
         // Log data for debugging

@@ -45,11 +45,13 @@ export const useDroneStore = create()(
         pending_charge_requests: [],
         updateState: async () => {
             try {
-                const response = await fetch('https://f4r.ict.tuwien.ac.at:443/visualisation');
+                // 'https://f4r.ict.tuwien.ac.at:443/visualisation'
+                const response = await fetch('http://localhost:8009/visualisation');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
+                console.log(data);
                 // Update the state with the new data
                 set((state) => {
                     Object.keys(data).forEach(key => {

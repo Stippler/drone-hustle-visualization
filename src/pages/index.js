@@ -9,6 +9,7 @@ import CostCurve from '@/components/cost-curve';
 import BatteryPrognosis from '@/components/battery-prognosis';
 import PriceCurve from '@/components/price-curve';
 import ApiInteractionForms from '@/components/control';
+import ExchangeRequests from '@/components/requests';
 
 export default function Home() {
 
@@ -48,6 +49,9 @@ export default function Home() {
           </Card>
           <Card title="Schedule" text={scheduleText}>
             <ScheduleBar />
+          </Card>
+          <Card title="Release Drone" text={"Final confirmation to exchange the battery."}>
+            <ExchangeRequests />
           </Card>
         </div>
         <ApiInteractionForms />
