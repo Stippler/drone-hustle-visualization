@@ -26,7 +26,10 @@ const ExchangeRequests = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ drone_id: id }),
+            body: JSON.stringify({
+                drone_id: id, 
+                response_uri: "https://bexstream-preprod.beyond-vision.pt/swagger-ieot/#/IEOT/IeotController_processBatteryExchanged"
+            }),
         }).then(response => response.json()) // Assuming the server responds with JSON
         .then(data => {
             console.log('Success:', data);
