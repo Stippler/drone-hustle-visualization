@@ -21,7 +21,7 @@ const ExchangeRequests = () => {
         console.log(`Button clicked for ID: ${id}`);
         // Add any additional logic you need here
         console.log({ drone_id: id });
-        fetch('http://localhost:8009/exchange-completed', {
+        fetch('https://f4r.ict.tuwien.ac.at:443/exchange-completed', {
             method: 'PUT', // Assuming it's a POST request
             headers: {
                 'Content-Type': 'application/json',

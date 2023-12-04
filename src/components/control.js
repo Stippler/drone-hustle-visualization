@@ -54,7 +54,7 @@ const ApiInteractionForms = () => {
         const method = form.getAttribute('method');
         // TODO: change back!
         // https://f4r.ict.tuwien.ac.at:443
-        const url = `http://localhost:8009${endpoint}`;
+        const url = `https://f4r.ict.tuwien.ac.at:443${endpoint}`;
 
 
         // Log data for debugging
